@@ -1,0 +1,36 @@
+# Developers
+.hg
+.git
+.svn
+.idea/
+.vscode/
+.sass-cache/
+*.db
+*.pyc
+__pycache__
+*~
+
+# Javascript libraries
+/node_modules/
+
+# Coverage reports & testing
+/reports/
+/htmlcov/
+.tox
+
+# Environment
+local.py
+/env/
+/media/
+/static/
+/mail/
+/log/*.log*
+/log/nginx/*.log*
+.env
+
+# Static files build by gulp
+src/klanten/static/css/admin/admin_overrides.css
+src/klanten/static/css/screen.css
+
+src/klanten/static/fonts/
+src/klanten/static/js/
