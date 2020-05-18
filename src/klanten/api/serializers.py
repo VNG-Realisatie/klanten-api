@@ -21,7 +21,6 @@ from klanten.datamodel.models import (
 logger = logging.getLogger(__name__)
 
 
-# klant models
 class SubVerblijfBuitenlandSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubVerblijfBuitenland

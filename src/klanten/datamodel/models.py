@@ -59,6 +59,18 @@ class Klant(APIMixin, models.Model):
             return getattr(self, self.subject_type)
         return None
 
+    def unique_representation(self):
+        if self.subject:
+            subject = (
+                self.subject.rstrip("/") if self.subject.endswith("/") else self.subject
+            )
+            return f"{self.subject_type}: {subject}"
+
+        if self.subject_identificatie:
+            return f"{self.subject_type}: {self.subject_identificatie.unique_representation()}"
+
+        return f"{self.subject_type}: {self.achternaam} {self.voornaam} - {self.telefoonnummer}"
+
 
 class NatuurlijkPersoon(models.Model):
     klant = models.OneToOneField(
@@ -113,6 +125,9 @@ class NatuurlijkPersoon(models.Model):
     class Meta:
         verbose_name = "natuurlijk persoon"
 
+    def unique_representation(self):
+        return f"{self.inp_bsn or self.anp_identificatie or self.inp_a_nummer}"
+
 
 class NietNatuurlijkPersoon(models.Model):
     klant = models.OneToOneField(
@@ -155,6 +170,9 @@ class NietNatuurlijkPersoon(models.Model):
     class Meta:
         verbose_name = "niet-natuurlijk persoon"
 
+    def unique_representation(self):
+        return f"{self.inn_nnp_id or self.ann_identificatie}"
+
 
 class Vestiging(models.Model):
     """
@@ -177,6 +195,9 @@ class Vestiging(models.Model):
 
     class Meta:
         verbose_name = "vestiging"
+
+    def unique_representation(self):
+        return f"{self.vestigings_nummer}"
 
 
 # models for nested objects
