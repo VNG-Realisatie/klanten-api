@@ -1,13 +1,16 @@
 from django.conf import settings
 
 from drf_yasg import openapi
+from vng_api_common.notifications.utils import notification_documentation
 
-description = """Een API om een klanten te benaderen.
+from .kanalen import KANAAL_KLANTEN
 
-Een API om zowel klanten te registreren als op te vragen. Een klant 
-is een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging 
-waarbij het gaat om niet geverifieerde gegevens. De Klanten API kan 
-zelfstandig of met andere API's samen werken om tot volledige functionaliteit 
+description = f"""Een API om een klanten te benaderen.
+
+Een API om zowel klanten te registreren als op te vragen. Een klant
+is een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging
+waarbij het gaat om niet geverifieerde gegevens. De Klanten API kan
+zelfstandig of met andere API's samen werken om tot volledige functionaliteit
 te komen.
 
 **Afhankelijkheden**
@@ -15,6 +18,7 @@ te komen.
 Deze API is afhankelijk van:
 
 * Autorisaties API
+* Notificaties API
 * Zaken API *(optioneel)*
 * Documenten API *(optioneel)*
 
@@ -23,6 +27,10 @@ Deze API is afhankelijk van:
 Deze API vereist autorisatie. Je kan de
 [token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te
 genereren.
+
+** Notificaties
+
+{notification_documentation(KANAAL_KLANTEN)}
 
 **Handige links**
 

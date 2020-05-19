@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Klanten API",
-        "description": "Een API om een klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant \nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging \nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan \nzelfstandig of met andere API's samen werken om tot volledige functionaliteit \nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
+        "description": "Een API om een klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant\nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging\nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan\nzelfstandig of met andere API's samen werken om tot volledige functionaliteit\nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n** Notificaties\n\nDeze API publiceert notificaties op het kanaal `klanten`.\n\n**Main resource**\n\n`klant`\n\n\n\n**Kenmerken**\n\n* `subject_type`: Type van de `subject`.\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
         "contact": {
             "url": "https://zaakgerichtwerken.vng.cloud",
             "email": "standaarden.ondersteuning@vng.nl"
@@ -193,6 +193,27 @@
                         "schema": {
                             "$ref": "#/definitions/Klant"
                         }
+                    },
+                    {
+                        "name": "X-NLX-Request-Application-Id",
+                        "in": "header",
+                        "description": "Identificatie van de applicatie die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-NLX-Request-User-Id",
+                        "in": "header",
+                        "description": "Identificatie van de gebruiker die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Audit-Toelichting",
+                        "in": "header",
+                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -360,8 +381,8 @@
         "/klanten/{klant_uuid}/audittrail": {
             "get": {
                 "operationId": "audittrail_list",
-                "summary": "Alle audit trail regels behorend bij het KLANT.",
-                "description": "Alle audit trail regels behorend bij het KLANT.",
+                "summary": "Alle audit trail regels behorend bij de KLANT.",
+                "description": "Alle audit trail regels behorend bij de KLANT.",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -909,6 +930,27 @@
                         "schema": {
                             "$ref": "#/definitions/Klant"
                         }
+                    },
+                    {
+                        "name": "X-NLX-Request-Application-Id",
+                        "in": "header",
+                        "description": "Identificatie van de applicatie die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-NLX-Request-User-Id",
+                        "in": "header",
+                        "description": "Identificatie van de gebruiker die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Audit-Toelichting",
+                        "in": "header",
+                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1090,6 +1132,27 @@
                         "schema": {
                             "$ref": "#/definitions/Klant"
                         }
+                    },
+                    {
+                        "name": "X-NLX-Request-Application-Id",
+                        "in": "header",
+                        "description": "Identificatie van de applicatie die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-NLX-Request-User-Id",
+                        "in": "header",
+                        "description": "Identificatie van de gebruiker die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Audit-Toelichting",
+                        "in": "header",
+                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1263,7 +1326,29 @@
                 "operationId": "klant_delete",
                 "summary": "Verwijder een KLANT.",
                 "description": "Verwijder een KLANT.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "X-NLX-Request-Application-Id",
+                        "in": "header",
+                        "description": "Identificatie van de applicatie die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-NLX-Request-User-Id",
+                        "in": "header",
+                        "description": "Identificatie van de gebruiker die het verzoek stuurt (indien NLX wordt gebruikt).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "X-Audit-Toelichting",
+                        "in": "header",
+                        "description": "Toelichting waarom een bepaald verzoek wordt gedaan",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "No content",

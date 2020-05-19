@@ -1,15 +1,77 @@
 openapi: 3.0.0
 info:
   title: Klanten API
-  description: "Een API om een klanten te benaderen.\n\nEen API om zowel klanten te\
-    \ registreren als op te vragen. Een klant \nis een natuurlijk persoon, niet-natuurlijk\
-    \ persoon (bedrijf) of vestiging \nwaarbij het gaat om niet geverifieerde gegevens.\
-    \ De Klanten API kan \nzelfstandig of met andere API's samen werken om tot volledige\
-    \ functionaliteit \nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk\
-    \ van:\n\n* Autorisaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\
-    \n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/)\
-    \ gebruiken om JWT-tokens te\ngenereren.\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n\
-    * [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n"
+  description: 'Een API om een klanten te benaderen.
+
+
+    Een API om zowel klanten te registreren als op te vragen. Een klant
+
+    is een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging
+
+    waarbij het gaat om niet geverifieerde gegevens. De Klanten API kan
+
+    zelfstandig of met andere API''s samen werken om tot volledige functionaliteit
+
+    te komen.
+
+
+    **Afhankelijkheden**
+
+
+    Deze API is afhankelijk van:
+
+
+    * Autorisaties API
+
+    * Notificaties API
+
+    * Zaken API *(optioneel)*
+
+    * Documenten API *(optioneel)*
+
+
+    **Autorisatie**
+
+
+    Deze API vereist autorisatie. Je kan de
+
+    [token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te
+
+    genereren.
+
+
+    ** Notificaties
+
+
+    Deze API publiceert notificaties op het kanaal `klanten`.
+
+
+    **Main resource**
+
+
+    `klant`
+
+
+
+
+    **Kenmerken**
+
+
+    * `subject_type`: Type van de `subject`.
+
+
+    **Resources en acties**
+
+
+
+    **Handige links**
+
+
+    * [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)
+
+    * [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)
+
+    '
   contact:
     url: https://zaakgerichtwerken.vng.cloud
     email: standaarden.ondersteuning@vng.nl
@@ -145,6 +207,27 @@ paths:
       operationId: klant_create
       summary: Maak een KLANT aan.
       description: Maak een KLANT aan.
+      parameters:
+      - name: X-NLX-Request-Application-Id
+        in: header
+        description: Identificatie van de applicatie die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-NLX-Request-User-Id
+        in: header
+        description: Identificatie van de gebruiker die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klant'
       responses:
@@ -282,8 +365,8 @@ paths:
   /klanten/{klant_uuid}/audittrail:
     get:
       operationId: audittrail_list
-      summary: Alle audit trail regels behorend bij het KLANT.
-      description: Alle audit trail regels behorend bij het KLANT.
+      summary: Alle audit trail regels behorend bij de KLANT.
+      description: Alle audit trail regels behorend bij de KLANT.
       responses:
         '200':
           description: OK
@@ -739,6 +822,27 @@ paths:
       operationId: klant_update
       summary: Werk een KLANT in zijn geheel bij.
       description: Werk een KLANT in zijn geheel bij.
+      parameters:
+      - name: X-NLX-Request-Application-Id
+        in: header
+        description: Identificatie van de applicatie die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-NLX-Request-User-Id
+        in: header
+        description: Identificatie van de gebruiker die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klant'
       responses:
@@ -883,6 +987,27 @@ paths:
       operationId: klant_partial_update
       summary: Werk een KLANT deels bij.
       description: Werk een KLANT deels bij.
+      parameters:
+      - name: X-NLX-Request-Application-Id
+        in: header
+        description: Identificatie van de applicatie die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-NLX-Request-User-Id
+        in: header
+        description: Identificatie van de gebruiker die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
       requestBody:
         $ref: '#/components/requestBodies/Klant'
       responses:
@@ -1027,6 +1152,27 @@ paths:
       operationId: klant_delete
       summary: Verwijder een KLANT.
       description: Verwijder een KLANT.
+      parameters:
+      - name: X-NLX-Request-Application-Id
+        in: header
+        description: Identificatie van de applicatie die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-NLX-Request-User-Id
+        in: header
+        description: Identificatie van de gebruiker die het verzoek stuurt (indien
+          NLX wordt gebruikt).
+        required: false
+        schema:
+          type: string
+      - name: X-Audit-Toelichting
+        in: header
+        description: Toelichting waarom een bepaald verzoek wordt gedaan
+        required: false
+        schema:
+          type: string
       responses:
         '204':
           description: No content

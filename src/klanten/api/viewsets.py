@@ -5,11 +5,13 @@ from vng_api_common.audittrails.viewsets import (
     AuditTrailViewSet,
     AuditTrailViewsetMixin,
 )
+from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.permissions import AuthScopesRequired
 
 from klanten.datamodel.models import Klant
 
 from .audits import AUDIT_KLANTEN
+from .kanalen import KANAAL_KLANTEN
 from .scopes import (
     SCOPE_KLANTEN_AANMAKEN,
     SCOPE_KLANTEN_ALLES_LEZEN,
@@ -21,7 +23,9 @@ from .serializers import KlantSerializer
 logger = logging.getLogger(__name__)
 
 
-class KlantViewSet(AuditTrailViewsetMixin, viewsets.ModelViewSet):
+class KlantViewSet(
+    NotificationViewSetMixin, AuditTrailViewsetMixin, viewsets.ModelViewSet
+):
     """
     Opvragen en bewerken van KLANTen.
 
@@ -69,7 +73,6 @@ class KlantViewSet(AuditTrailViewsetMixin, viewsets.ModelViewSet):
     serializer_class = KlantSerializer
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
-    audit = AUDIT_KLANTEN
     required_scopes = {
         "list": SCOPE_KLANTEN_ALLES_LEZEN,
         "retrieve": SCOPE_KLANTEN_ALLES_LEZEN,
@@ -78,6 +81,8 @@ class KlantViewSet(AuditTrailViewsetMixin, viewsets.ModelViewSet):
         "partial_update": SCOPE_KLANTEN_BIJWERKEN,
         "destroy": SCOPE_KLANTEN_ALLES_VERWIJDEREN,
     }
+    notifications_kanaal = KANAAL_KLANTEN
+    audit = AUDIT_KLANTEN
 
 
 class KlantAuditTrailViewSet(AuditTrailViewSet):
