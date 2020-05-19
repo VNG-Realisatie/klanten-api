@@ -19,8 +19,6 @@ Deze API is afhankelijk van:
 
 * Autorisaties API
 * Notificaties API
-* Zaken API *(optioneel)*
-* Documenten API *(optioneel)*
 
 **Autorisatie**
 
