@@ -82,10 +82,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
     def test_delete_klant_cascade_audittrails(self):
         klant_data = self._create_klant()
 
-        # Delete the Besluit
+        # Delete the Klant
         self.client.delete(klant_data["url"])
 
-        # Verify that deleting the Besluit deletes all related AuditTrails
         audittrails = AuditTrail.objects.filter(hoofd_object=klant_data["url"])
         self.assertFalse(audittrails.exists())
 
