@@ -5,7 +5,7 @@ from vng_api_common.notifications.utils import notification_documentation
 
 from .kanalen import KANAAL_KLANTEN
 
-description = f"""Een API om een klanten te benaderen.
+description = f"""Een API om klanten te benaderen.
 
 Een API om zowel klanten te registreren als op te vragen. Een klant
 is een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging
