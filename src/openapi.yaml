@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Klanten API
-  description: 'Een API om een klanten te benaderen.
+  description: 'Een API om klanten te benaderen.
 
 
     Een API om zowel klanten te registreren als op te vragen. Een klant
@@ -24,10 +24,6 @@ info:
     * Autorisaties API
 
     * Notificaties API
-
-    * Zaken API *(optioneel)*
-
-    * Documenten API *(optioneel)*
 
 
     **Autorisatie**
@@ -78,7 +74,7 @@ info:
   license:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
-  version: 1.0.0-rc1
+  version: 1.0.0-beta
 security:
 - JWT-Claims: []
 paths:
