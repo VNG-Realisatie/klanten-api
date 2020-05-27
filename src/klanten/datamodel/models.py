@@ -46,9 +46,6 @@ class Klant(APIMixin, models.Model):
     achternaam = models.CharField(
         max_length=200, blank=True, help_text="De achternaam van de klant."
     )
-    adres = models.CharField(
-        max_length=1000, blank=True, help_text="Het adres van de klant."
-    )
     functie = models.CharField(
         max_length=200, blank=True, help_text="De functie van de klant."
     )
@@ -264,11 +261,11 @@ class SubVerblijfBuitenland(models.Model):
 
 
 class AdresBase(models.Model):
-    woonplaats_naam = models.CharField(max_length=80)
     huisnummer = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
     huisletter = models.CharField(max_length=1, blank=True)
     huisnummertoevoeging = models.CharField(max_length=4, blank=True)
     postcode = models.CharField(max_length=7, blank=True)
+    woonplaats_naam = models.CharField(max_length=80)
 
     class Meta:
         abstract = True
@@ -308,7 +305,9 @@ class VerblijfsAdres(AdresBase):
 
 
 class KlantAdres(AdresBase):
-    klant = models.OneToOneField("datamodel.Klant", on_delete=models.CASCADE)
+    klant = models.OneToOneField(
+        "datamodel.Klant", on_delete=models.CASCADE, related_name="adres"
+    )
     straatnaam = models.CharField(max_length=100, blank=True)
     landcode = models.CharField(
         max_length=4,

@@ -1512,7 +1512,63 @@
         }
     },
     "definitions": {
+        "KlantAdres": {
+            "title": "Adres",
+            "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
+            "required": [
+                "huisnummer",
+                "woonplaatsnaam",
+                "landcode"
+            ],
+            "type": "object",
+            "properties": {
+                "straatnaam": {
+                    "title": "Straatnaam",
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "huisnummer": {
+                    "title": "Huisnummer",
+                    "type": "integer",
+                    "maximum": 99999,
+                    "minimum": 0
+                },
+                "huisletter": {
+                    "title": "Huisletter",
+                    "type": "string",
+                    "maxLength": 1
+                },
+                "huisnummertoevoeging": {
+                    "title": "Huisnummertoevoeging",
+                    "type": "string",
+                    "maxLength": 4
+                },
+                "postcode": {
+                    "title": "Postcode",
+                    "type": "string",
+                    "maxLength": 7
+                },
+                "woonplaatsnaam": {
+                    "title": "Woonplaatsnaam",
+                    "type": "string",
+                    "maxLength": 80,
+                    "minLength": 1
+                },
+                "landcode": {
+                    "title": "Landcode",
+                    "description": "De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP.",
+                    "type": "string",
+                    "maxLength": 4,
+                    "minLength": 1
+                }
+            }
+        },
         "Klant": {
+            "required": [
+                "bronorganisatie",
+                "klantnummer",
+                "websiteUrl"
+            ],
             "type": "object",
             "properties": {
                 "url": {
@@ -1524,23 +1580,57 @@
                     "maxLength": 1000,
                     "minLength": 1
                 },
+                "bronorganisatie": {
+                    "title": "Bronorganisatie",
+                    "description": "Het RSIN van de Niet-natuurlijk persoon zijnde de organisatie die de klant heeft gecreeerd. Dit moet een geldig RSIN zijn van 9 nummers en voldoen aan https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef",
+                    "type": "string",
+                    "maxLength": 9,
+                    "minLength": 1
+                },
+                "klantnummer": {
+                    "title": "Klantnummer",
+                    "description": "De unieke identificatie van de klant binnen de bronorganisatie.",
+                    "type": "string",
+                    "maxLength": 8,
+                    "minLength": 1
+                },
+                "bedrijfsnaam": {
+                    "title": "Bedrijfsnaam",
+                    "description": "De bedrijfsnaam van de klant.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "functie": {
+                    "title": "Functie",
+                    "description": "De functie van de klant.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "websiteUrl": {
+                    "title": "Website url",
+                    "description": "Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
                 "voornaam": {
                     "title": "Voornaam",
                     "description": "De voornaam, voorletters of roepnaam van de klant.",
                     "type": "string",
                     "maxLength": 200
                 },
+                "voorvoegselAchternaam": {
+                    "title": "Voorvoegsel achternaam",
+                    "description": "Het voorvoegsel van de achternaam van de klant.",
+                    "type": "string",
+                    "maxLength": 10
+                },
                 "achternaam": {
                     "title": "Achternaam",
                     "description": "De achternaam van de klant.",
                     "type": "string",
                     "maxLength": 200
-                },
-                "adres": {
-                    "title": "Adres",
-                    "description": "Het adres van de klant.",
-                    "type": "string",
-                    "maxLength": 1000
                 },
                 "telefoonnummer": {
                     "title": "Telefoonnummer",
@@ -1555,11 +1645,8 @@
                     "format": "email",
                     "maxLength": 254
                 },
-                "functie": {
-                    "title": "Functie",
-                    "description": "De functie van de klant.",
-                    "type": "string",
-                    "maxLength": 200
+                "adres": {
+                    "$ref": "#/definitions/KlantAdres"
                 },
                 "subject": {
                     "title": "Subject",

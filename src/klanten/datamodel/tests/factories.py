@@ -9,7 +9,6 @@ class KlantFactory(factory.django.DjangoModelFactory):
     website_url = factory.Faker("url")
     voornaam = factory.Faker("first_name")
     achternaam = factory.Faker("last_name")
-    adres = factory.Faker("address")
     emailadres = factory.Faker("email")
     functie = factory.Faker("word")
     subject = factory.Faker("url")
@@ -73,3 +72,13 @@ class VerblijfsAdresFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "datamodel.VerblijfsAdres"
+
+
+class KlantAdresFactory(factory.django.DjangoModelFactory):
+    klant = factory.SubFactory(KlantFactory)
+    huisnummer = factory.fuzzy.FuzzyInteger(99999)
+    woonplaats_naam = factory.Faker("city")
+    landcode = factory.fuzzy.FuzzyText(length=4)
+
+    class Meta:
+        model = "datamodel.KlantAdres"

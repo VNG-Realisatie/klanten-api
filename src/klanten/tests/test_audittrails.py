@@ -18,6 +18,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
     def _create_klant(self):
         list_url = reverse(Klant)
         data = {
+            "bronorganisatie": "950428139",
+            "klantnummer": "1111",
+            "websiteUrl": "http://some.website.com",
             "voornaam": "Xavier",
             "achternaam": "Jackson",
             "emailadres": "test@gmail.com",
