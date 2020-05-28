@@ -261,11 +261,11 @@ class SubVerblijfBuitenland(models.Model):
 
 
 class AdresBase(models.Model):
-    huisnummer = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
+    huisnummer = models.PositiveIntegerField(validators=[MaxValueValidator(99999)], blank=True, null=True)
     huisletter = models.CharField(max_length=1, blank=True)
     huisnummertoevoeging = models.CharField(max_length=4, blank=True)
     postcode = models.CharField(max_length=7, blank=True)
-    woonplaats_naam = models.CharField(max_length=80)
+    woonplaats_naam = models.CharField(max_length=80, blank=True)
 
     class Meta:
         abstract = True
