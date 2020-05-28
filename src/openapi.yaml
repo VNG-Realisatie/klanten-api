@@ -1335,10 +1335,6 @@ components:
       title: Adres
       description: Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres
         zijn)
-      required:
-      - huisnummer
-      - woonplaatsnaam
-      - landcode
       type: object
       properties:
         straatnaam:
@@ -1350,6 +1346,7 @@ components:
           type: integer
           maximum: 99999
           minimum: 0
+          nullable: true
         huisletter:
           title: Huisletter
           type: string
@@ -1366,14 +1363,13 @@ components:
           title: Woonplaatsnaam
           type: string
           maxLength: 80
-          minLength: 1
         landcode:
           title: Landcode
           description: De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel
             van de BRP.
           type: string
           maxLength: 4
-          minLength: 1
+      nullable: true
     Klant:
       required:
       - bronorganisatie
@@ -1415,7 +1411,7 @@ components:
           type: string
           maxLength: 200
         websiteUrl:
-          title: Website url
+          title: Website URL
           description: Het label of etiket dat aan de specifieke informatiebron, zoals
             een webpagina, een bestand of een plaatje op internet is toegewezen waar
             de KLANT in de regel op het internet vindbaar is.
@@ -1482,9 +1478,7 @@ components:
       title: Verblijfsadres
       required:
       - aoaIdentificatie
-      - wplWoonplaatsNaam
       - gorOpenbareRuimteNaam
-      - aoaHuisnummer
       type: object
       properties:
         aoaIdentificatie:
@@ -1497,7 +1491,6 @@ components:
           title: Wpl woonplaats naam
           type: string
           maxLength: 80
-          minLength: 1
         gorOpenbareRuimteNaam:
           title: Gor openbare ruimte naam
           description: Een door het bevoegde gemeentelijke orgaan aan een OPENBARE
@@ -1514,6 +1507,7 @@ components:
           type: integer
           maximum: 99999
           minimum: 0
+          nullable: true
         aoaHuisletter:
           title: Aoa huisletter
           type: string

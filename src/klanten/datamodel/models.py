@@ -30,6 +30,7 @@ class Klant(APIMixin, models.Model):
         max_length=200, blank=True, help_text="De bedrijfsnaam van de klant."
     )
     website_url = models.URLField(
+        "Website URL",
         max_length=1000,
         help_text="Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
     )
@@ -261,7 +262,9 @@ class SubVerblijfBuitenland(models.Model):
 
 
 class AdresBase(models.Model):
-    huisnummer = models.PositiveIntegerField(validators=[MaxValueValidator(99999)], blank=True, null=True)
+    huisnummer = models.PositiveIntegerField(
+        validators=[MaxValueValidator(99999)], blank=True, null=True
+    )
     huisletter = models.CharField(max_length=1, blank=True)
     huisnummertoevoeging = models.CharField(max_length=4, blank=True)
     postcode = models.CharField(max_length=7, blank=True)
@@ -311,5 +314,6 @@ class KlantAdres(AdresBase):
     straatnaam = models.CharField(max_length=100, blank=True)
     landcode = models.CharField(
         max_length=4,
+        blank=True,
         help_text="De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP.",
     )

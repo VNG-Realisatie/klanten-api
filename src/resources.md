@@ -11,12 +11,12 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | straatnaam |  | string | nee | C​R​U​D |
-| huisnummer |  | integer | ja | C​R​U​D |
+| huisnummer |  | integer | nee | C​R​U​D |
 | huisletter |  | string | nee | C​R​U​D |
 | huisnummertoevoeging |  | string | nee | C​R​U​D |
 | postcode |  | string | nee | C​R​U​D |
-| woonplaatsnaam |  | string | ja | C​R​U​D |
-| landcode | De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP. | string | ja | C​R​U​D |
+| woonplaatsnaam |  | string | nee | C​R​U​D |
+| landcode | De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP. | string | nee | C​R​U​D |
 
 ## Klant
 
@@ -51,10 +51,10 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | aoaIdentificatie | De unieke identificatie van het OBJECT | string | ja | C​R​U​D |
-| wplWoonplaatsNaam |  | string | ja | C​R​U​D |
+| wplWoonplaatsNaam |  | string | nee | C​R​U​D |
 | gorOpenbareRuimteNaam | Een door het bevoegde gemeentelijke orgaan aan een OPENBARE RUIMTE toegekende benaming | string | ja | C​R​U​D |
 | aoaPostcode |  | string | nee | C​R​U​D |
-| aoaHuisnummer |  | integer | ja | C​R​U​D |
+| aoaHuisnummer |  | integer | nee | C​R​U​D |
 | aoaHuisletter |  | string | nee | C​R​U​D |
 | aoaHuisnummertoevoeging |  | string | nee | C​R​U​D |
 | inpLocatiebeschrijving |  | string | nee | C​R​U​D |

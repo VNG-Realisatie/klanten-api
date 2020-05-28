@@ -1515,11 +1515,6 @@
         "KlantAdres": {
             "title": "Adres",
             "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
-            "required": [
-                "huisnummer",
-                "woonplaatsnaam",
-                "landcode"
-            ],
             "type": "object",
             "properties": {
                 "straatnaam": {
@@ -1531,7 +1526,8 @@
                     "title": "Huisnummer",
                     "type": "integer",
                     "maximum": 99999,
-                    "minimum": 0
+                    "minimum": 0,
+                    "x-nullable": true
                 },
                 "huisletter": {
                     "title": "Huisletter",
@@ -1551,17 +1547,16 @@
                 "woonplaatsnaam": {
                     "title": "Woonplaatsnaam",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "landcode": {
                     "title": "Landcode",
                     "description": "De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP.",
                     "type": "string",
-                    "maxLength": 4,
-                    "minLength": 1
+                    "maxLength": 4
                 }
-            }
+            },
+            "x-nullable": true
         },
         "Klant": {
             "required": [
@@ -1607,7 +1602,7 @@
                     "maxLength": 200
                 },
                 "websiteUrl": {
-                    "title": "Website url",
+                    "title": "Website URL",
                     "description": "Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
                     "type": "string",
                     "format": "uri",
@@ -1673,9 +1668,7 @@
             "title": "Verblijfsadres",
             "required": [
                 "aoaIdentificatie",
-                "wplWoonplaatsNaam",
-                "gorOpenbareRuimteNaam",
-                "aoaHuisnummer"
+                "gorOpenbareRuimteNaam"
             ],
             "type": "object",
             "properties": {
@@ -1689,8 +1682,7 @@
                 "wplWoonplaatsNaam": {
                     "title": "Wpl woonplaats naam",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "gorOpenbareRuimteNaam": {
                     "title": "Gor openbare ruimte naam",
@@ -1708,7 +1700,8 @@
                     "title": "Aoa huisnummer",
                     "type": "integer",
                     "maximum": 99999,
-                    "minimum": 0
+                    "minimum": 0,
+                    "x-nullable": true
                 },
                 "aoaHuisletter": {
                     "title": "Aoa huisletter",
