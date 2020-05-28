@@ -10,11 +10,12 @@ from vng_api_common.validators import IsImmutableValidator
 
 from klanten.datamodel.constants import GeslachtsAanduiding, KlantType
 from klanten.datamodel.models import (
-    Adres,
     Klant,
+    KlantAdres,
     NatuurlijkPersoon,
     NietNatuurlijkPersoon,
     SubVerblijfBuitenland,
+    VerblijfsAdres,
     Vestiging,
 )
 
@@ -35,7 +36,7 @@ class SubVerblijfBuitenlandSerializer(serializers.ModelSerializer):
 
 class VerblijfsAdresSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Adres
+        model = VerblijfsAdres
         fields = (
             "aoa_identificatie",
             "wpl_woonplaats_naam",
@@ -46,6 +47,28 @@ class VerblijfsAdresSerializer(serializers.ModelSerializer):
             "aoa_huisnummertoevoeging",
             "inp_locatiebeschrijving",
         )
+        extra_kwargs = {
+            "aoa_postcode": {"source": "postcode"},
+            "aoa_huisnummer": {"source": "huisnummer"},
+            "aoa_huisletter": {"source": "huisletter"},
+            "aoa_huisnummertoevoeging": {"source": "huisnummertoevoeging"},
+            "wpl_woonplaats_naam": {"source": "woonplaats_naam"},
+        }
+
+
+class KlantAdresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KlantAdres
+        fields = (
+            "straatnaam",
+            "huisnummer",
+            "huisletter",
+            "huisnummertoevoeging",
+            "postcode",
+            "woonplaatsnaam",
+            "landcode",
+        )
+        extra_kwargs = {"woonplaatsnaam": {"source": "woonplaats_naam"}}
 
 
 class NatuurlijkPersoonSerializer(serializers.ModelSerializer):
@@ -233,6 +256,11 @@ class VestigingSerializer(serializers.ModelSerializer):
 
 # main models
 class KlantSerializer(PolymorphicSerializer):
+    adres = KlantAdresSerializer(
+        required=False,
+        allow_null=True,
+        help_text="Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
+    )
     discriminator = Discriminator(
         discriminator_field="subject_type",
         mapping={
@@ -248,12 +276,17 @@ class KlantSerializer(PolymorphicSerializer):
         model = Klant
         fields = (
             "url",
+            "bronorganisatie",
+            "klantnummer",
+            "bedrijfsnaam",
+            "functie",
+            "website_url",
             "voornaam",
+            "voorvoegsel_achternaam",
             "achternaam",
-            "adres",
             "telefoonnummer",
             "emailadres",
-            "functie",
+            "adres",
             "subject",
             "subject_type",
         )
@@ -300,7 +333,12 @@ class KlantSerializer(PolymorphicSerializer):
     @transaction.atomic
     def create(self, validated_data):
         group_data = validated_data.pop("subject_identificatie", None)
+        adres_data = validated_data.pop("adres", None)
         klant = super().create(validated_data)
+
+        if adres_data:
+            adres_data["klant"] = klant
+            KlantAdresSerializer().create(adres_data)
 
         if group_data:
             group_serializer = self.discriminator.mapping[
@@ -315,8 +353,16 @@ class KlantSerializer(PolymorphicSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         group_data = validated_data.pop("subject_identificatie", None)
+        adres_data = validated_data.pop("adres", None)
         klant = super().update(instance, validated_data)
         subject_type = validated_data.get("subject_type", klant.subject_type)
+
+        if adres_data:
+            if hasattr(klant, "adres"):
+                KlantAdresSerializer().update(klant.adres, adres_data)
+            else:
+                adres_data["klant"] = klant
+                KlantAdresSerializer().create(adres_data)
 
         if group_data:
             group_serializer = self.discriminator.mapping[subject_type]

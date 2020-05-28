@@ -4,9 +4,11 @@ from ..constants import KlantType, SoortRechtsvorm
 
 
 class KlantFactory(factory.django.DjangoModelFactory):
+    bronorganisatie = factory.Faker("ssn", locale="nl_NL")
+    klantnummer = factory.Sequence(lambda n: f"{n}")
+    website_url = factory.Faker("url")
     voornaam = factory.Faker("first_name")
     achternaam = factory.Faker("last_name")
-    adres = factory.Faker("address")
     emailadres = factory.Faker("email")
     functie = factory.Faker("word")
     subject = factory.Faker("url")
@@ -60,13 +62,23 @@ class SubVerblijfBuitenlandFactory(factory.django.DjangoModelFactory):
         model = "datamodel.SubVerblijfBuitenland"
 
 
-class AdresFactory(factory.django.DjangoModelFactory):
+class VerblijfsAdresFactory(factory.django.DjangoModelFactory):
     natuurlijkpersoon = factory.SubFactory(NatuurlijkPersoonFactory)
     # vestiging = factory.SubFactory(VestigingFactory)
     aoa_identificatie = factory.Sequence(lambda n: f"{n}")
-    wpl_woonplaats_naam = factory.Faker("city")
+    woonplaats_naam = factory.Faker("city")
     gor_openbare_ruimte_naam = factory.Faker("word")
-    aoa_huisnummer = factory.fuzzy.FuzzyInteger(99999)
+    huisnummer = factory.fuzzy.FuzzyInteger(99999)
 
     class Meta:
-        model = "datamodel.Adres"
+        model = "datamodel.VerblijfsAdres"
+
+
+class KlantAdresFactory(factory.django.DjangoModelFactory):
+    klant = factory.SubFactory(KlantFactory)
+    huisnummer = factory.fuzzy.FuzzyInteger(99999)
+    woonplaats_naam = factory.Faker("city")
+    landcode = factory.fuzzy.FuzzyText(length=4)
+
+    class Meta:
+        model = "datamodel.KlantAdres"

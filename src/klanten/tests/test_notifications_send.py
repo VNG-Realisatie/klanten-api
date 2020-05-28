@@ -27,6 +27,9 @@ class SendNotifTestCase(JWTAuthMixin, APITestCase):
         client = mock_client.return_value
         url = get_operation_url("klant_create")
         data = {
+            "bronorganisatie": "950428139",
+            "klantnummer": "1111",
+            "websiteUrl": "http://some.website.com",
             "voornaam": "Xavier",
             "achternaam": "Jackson",
             "emailadres": "test@gmail.com",

@@ -16,16 +16,36 @@ class Klant(APIMixin, models.Model):
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
     )
+    bronorganisatie = RSINField(
+        help_text="Het RSIN van de Niet-natuurlijk persoon zijnde de "
+        "organisatie die de klant heeft gecreeerd. Dit moet een "
+        "geldig RSIN zijn van 9 nummers en voldoen aan "
+        "https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef"
+    )
+    klantnummer = models.CharField(
+        max_length=8,
+        help_text="De unieke identificatie van de klant binnen de bronorganisatie.",
+    )
+    bedrijfsnaam = models.CharField(
+        max_length=200, blank=True, help_text="De bedrijfsnaam van de klant."
+    )
+    website_url = models.URLField(
+        "Website URL",
+        max_length=1000,
+        help_text="Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
+    )
     voornaam = models.CharField(
         max_length=200,
         blank=True,
         help_text="De voornaam, voorletters of roepnaam van de klant.",
     )
+    voorvoegsel_achternaam = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="Het voorvoegsel van de achternaam van de klant.",
+    )
     achternaam = models.CharField(
         max_length=200, blank=True, help_text="De achternaam van de klant."
-    )
-    adres = models.CharField(
-        max_length=1000, blank=True, help_text="Het adres van de klant."
     )
     functie = models.CharField(
         max_length=200, blank=True, help_text="De functie van de klant."
@@ -52,6 +72,7 @@ class Klant(APIMixin, models.Model):
     class Meta:
         verbose_name = "klant"
         verbose_name_plural = "klanten"
+        unique_together = ("bronorganisatie", "klantnummer")
 
     @property
     def subject_identificatie(self):
@@ -60,16 +81,7 @@ class Klant(APIMixin, models.Model):
         return None
 
     def unique_representation(self):
-        if self.subject:
-            subject = (
-                self.subject.rstrip("/") if self.subject.endswith("/") else self.subject
-            )
-            return f"{self.subject_type}: {subject}"
-
-        if self.subject_identificatie:
-            return f"{self.subject_type}: {self.subject_identificatie.unique_representation()}"
-
-        return f"{self.subject_type}: {self.achternaam} {self.voornaam} - {self.telefoonnummer}"
+        return f"{self.bronorganisatie} - {self.klantnummer}"
 
 
 class NatuurlijkPersoon(models.Model):
@@ -249,7 +261,20 @@ class SubVerblijfBuitenland(models.Model):
             )
 
 
-class Adres(models.Model):
+class AdresBase(models.Model):
+    huisnummer = models.PositiveIntegerField(
+        validators=[MaxValueValidator(99999)], blank=True, null=True
+    )
+    huisletter = models.CharField(max_length=1, blank=True)
+    huisnummertoevoeging = models.CharField(max_length=4, blank=True)
+    postcode = models.CharField(max_length=7, blank=True)
+    woonplaats_naam = models.CharField(max_length=80, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class VerblijfsAdres(AdresBase):
     natuurlijkpersoon = models.OneToOneField(
         "datamodel.NatuurlijkPersoon",
         on_delete=models.CASCADE,
@@ -265,16 +290,13 @@ class Adres(models.Model):
     aoa_identificatie = models.CharField(
         max_length=100, help_text="De unieke identificatie van het OBJECT"
     )
-    wpl_woonplaats_naam = models.CharField(max_length=80)
+
     gor_openbare_ruimte_naam = models.CharField(
         max_length=80,
         help_text="Een door het bevoegde gemeentelijke orgaan aan een "
         "OPENBARE RUIMTE toegekende benaming",
     )
-    aoa_huisnummer = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
-    aoa_huisletter = models.CharField(max_length=1, blank=True)
-    aoa_huisnummertoevoeging = models.CharField(max_length=4, blank=True)
-    aoa_postcode = models.CharField(max_length=7, blank=True)
+
     inp_locatiebeschrijving = models.CharField(max_length=1000, blank=True)
 
     def clean(self):
@@ -283,3 +305,15 @@ class Adres(models.Model):
             raise ValidationError(
                 "Relations to NatuurlijkPersoon or Vestiging models should be set"
             )
+
+
+class KlantAdres(AdresBase):
+    klant = models.OneToOneField(
+        "datamodel.Klant", on_delete=models.CASCADE, related_name="adres"
+    )
+    straatnaam = models.CharField(max_length=100, blank=True)
+    landcode = models.CharField(
+        max_length=4,
+        blank=True,
+        help_text="De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP.",
+    )

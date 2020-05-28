@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "Klanten API",
-        "description": "Een API om klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant\nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging\nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan\nzelfstandig of met andere API's samen werken om tot volledige functionaliteit\nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n** Notificaties\n\nDeze API publiceert notificaties op het kanaal `klanten`.\n\n**Main resource**\n\n`klant`\n\n\n\n**Kenmerken**\n\n* `subject_type`: Type van de `subject`.\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
+        "description": "Een API om klanten te benaderen.\n\nEen API om zowel klanten te registreren als op te vragen. Een klant\nis een natuurlijk persoon, niet-natuurlijk persoon (bedrijf) of vestiging\nwaarbij het gaat om niet geverifieerde gegevens. De Klanten API kan\nzelfstandig of met andere API's samen werken om tot volledige functionaliteit\nte komen.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Autorisaties API\n* Notificaties API\n* Zaken API *(optioneel)*\n* Documenten API *(optioneel)*\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te\ngenereren.\n\n** Notificaties\n\nDeze API publiceert notificaties op het kanaal `klanten`.\n\n**Main resource**\n\n`klant`\n\n\n\n**Kenmerken**\n\n* `subject_type`: Type van de `subject`.\n\n**Resources en acties**\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
         "contact": {
             "url": "https://zaakgerichtwerken.vng.cloud",
             "email": "standaarden.ondersteuning@vng.nl"
@@ -1512,7 +1512,58 @@
         }
     },
     "definitions": {
+        "KlantAdres": {
+            "title": "Adres",
+            "description": "Adresgegevens zoals opgegeven door de klant (kan ook een buitenlandsadres zijn)",
+            "type": "object",
+            "properties": {
+                "straatnaam": {
+                    "title": "Straatnaam",
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "huisnummer": {
+                    "title": "Huisnummer",
+                    "type": "integer",
+                    "maximum": 99999,
+                    "minimum": 0,
+                    "x-nullable": true
+                },
+                "huisletter": {
+                    "title": "Huisletter",
+                    "type": "string",
+                    "maxLength": 1
+                },
+                "huisnummertoevoeging": {
+                    "title": "Huisnummertoevoeging",
+                    "type": "string",
+                    "maxLength": 4
+                },
+                "postcode": {
+                    "title": "Postcode",
+                    "type": "string",
+                    "maxLength": 7
+                },
+                "woonplaatsnaam": {
+                    "title": "Woonplaatsnaam",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "landcode": {
+                    "title": "Landcode",
+                    "description": "De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP.",
+                    "type": "string",
+                    "maxLength": 4
+                }
+            },
+            "x-nullable": true
+        },
         "Klant": {
+            "required": [
+                "bronorganisatie",
+                "klantnummer",
+                "websiteUrl"
+            ],
             "type": "object",
             "properties": {
                 "url": {
@@ -1524,23 +1575,57 @@
                     "maxLength": 1000,
                     "minLength": 1
                 },
+                "bronorganisatie": {
+                    "title": "Bronorganisatie",
+                    "description": "Het RSIN van de Niet-natuurlijk persoon zijnde de organisatie die de klant heeft gecreeerd. Dit moet een geldig RSIN zijn van 9 nummers en voldoen aan https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef",
+                    "type": "string",
+                    "maxLength": 9,
+                    "minLength": 1
+                },
+                "klantnummer": {
+                    "title": "Klantnummer",
+                    "description": "De unieke identificatie van de klant binnen de bronorganisatie.",
+                    "type": "string",
+                    "maxLength": 8,
+                    "minLength": 1
+                },
+                "bedrijfsnaam": {
+                    "title": "Bedrijfsnaam",
+                    "description": "De bedrijfsnaam van de klant.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "functie": {
+                    "title": "Functie",
+                    "description": "De functie van de klant.",
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "websiteUrl": {
+                    "title": "Website URL",
+                    "description": "Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is.",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 1000,
+                    "minLength": 1
+                },
                 "voornaam": {
                     "title": "Voornaam",
                     "description": "De voornaam, voorletters of roepnaam van de klant.",
                     "type": "string",
                     "maxLength": 200
                 },
+                "voorvoegselAchternaam": {
+                    "title": "Voorvoegsel achternaam",
+                    "description": "Het voorvoegsel van de achternaam van de klant.",
+                    "type": "string",
+                    "maxLength": 10
+                },
                 "achternaam": {
                     "title": "Achternaam",
                     "description": "De achternaam van de klant.",
                     "type": "string",
                     "maxLength": 200
-                },
-                "adres": {
-                    "title": "Adres",
-                    "description": "Het adres van de klant.",
-                    "type": "string",
-                    "maxLength": 1000
                 },
                 "telefoonnummer": {
                     "title": "Telefoonnummer",
@@ -1555,11 +1640,8 @@
                     "format": "email",
                     "maxLength": 254
                 },
-                "functie": {
-                    "title": "Functie",
-                    "description": "De functie van de klant.",
-                    "type": "string",
-                    "maxLength": 200
+                "adres": {
+                    "$ref": "#/definitions/KlantAdres"
                 },
                 "subject": {
                     "title": "Subject",
@@ -1586,9 +1668,7 @@
             "title": "Verblijfsadres",
             "required": [
                 "aoaIdentificatie",
-                "wplWoonplaatsNaam",
-                "gorOpenbareRuimteNaam",
-                "aoaHuisnummer"
+                "gorOpenbareRuimteNaam"
             ],
             "type": "object",
             "properties": {
@@ -1602,8 +1682,7 @@
                 "wplWoonplaatsNaam": {
                     "title": "Wpl woonplaats naam",
                     "type": "string",
-                    "maxLength": 80,
-                    "minLength": 1
+                    "maxLength": 80
                 },
                 "gorOpenbareRuimteNaam": {
                     "title": "Gor openbare ruimte naam",
@@ -1621,7 +1700,8 @@
                     "title": "Aoa huisnummer",
                     "type": "integer",
                     "maximum": 99999,
-                    "minimum": 0
+                    "minimum": 0,
+                    "x-nullable": true
                 },
                 "aoaHuisletter": {
                     "title": "Aoa huisletter",

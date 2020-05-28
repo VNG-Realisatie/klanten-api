@@ -4,6 +4,20 @@ Dit document beschrijft de (RGBZ-)objecttypen die als resources ontsloten
 worden met de beschikbare attributen.
 
 
+## KlantAdres
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/klantadres)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| straatnaam |  | string | nee | C​R​U​D |
+| huisnummer |  | integer | nee | C​R​U​D |
+| huisletter |  | string | nee | C​R​U​D |
+| huisnummertoevoeging |  | string | nee | C​R​U​D |
+| postcode |  | string | nee | C​R​U​D |
+| woonplaatsnaam |  | string | nee | C​R​U​D |
+| landcode | De code, behorende bij de landnaam, zoals opgenomen in de Land/Gebied-tabel van de BRP. | string | nee | C​R​U​D |
+
 ## Klant
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/klant)
@@ -11,12 +25,16 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/o
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| bronorganisatie | Het RSIN van de Niet-natuurlijk persoon zijnde de organisatie die de klant heeft gecreeerd. Dit moet een geldig RSIN zijn van 9 nummers en voldoen aan https://nl.wikipedia.org/wiki/Burgerservicenummer#11-proef | string | ja | C​R​U​D |
+| klantnummer | De unieke identificatie van de klant binnen de bronorganisatie. | string | ja | C​R​U​D |
+| bedrijfsnaam | De bedrijfsnaam van de klant. | string | nee | C​R​U​D |
+| functie | De functie van de klant. | string | nee | C​R​U​D |
+| websiteUrl | Het label of etiket dat aan de specifieke informatiebron, zoals een webpagina, een bestand of een plaatje op internet is toegewezen waar de KLANT in de regel op het internet vindbaar is. | string | ja | C​R​U​D |
 | voornaam | De voornaam, voorletters of roepnaam van de klant. | string | nee | C​R​U​D |
+| voorvoegselAchternaam | Het voorvoegsel van de achternaam van de klant. | string | nee | C​R​U​D |
 | achternaam | De achternaam van de klant. | string | nee | C​R​U​D |
-| adres | Het adres van de klant. | string | nee | C​R​U​D |
 | telefoonnummer | Het mobiele of vaste telefoonnummer van de klant. | string | nee | C​R​U​D |
 | emailadres | Het e-mail adres van de klant. | string | nee | C​R​U​D |
-| functie | De functie van de klant. | string | nee | C​R​U​D |
 | subject | URL-referentie naar een subject | string | nee | C​R​U​D |
 | subjectType | Type van de `subject`.
 
@@ -25,6 +43,21 @@ Uitleg bij mogelijke waarden:
 * `natuurlijk_persoon` - Natuurlijk persoon
 * `niet_natuurlijk_persoon` - Niet-natuurlijk persoon
 * `vestiging` - Vestiging | string | nee | C​R​U​D |
+
+## VerblijfsAdres
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Rgbz_1.0/doc/objecttype/verblijfsadres)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| aoaIdentificatie | De unieke identificatie van het OBJECT | string | ja | C​R​U​D |
+| wplWoonplaatsNaam |  | string | nee | C​R​U​D |
+| gorOpenbareRuimteNaam | Een door het bevoegde gemeentelijke orgaan aan een OPENBARE RUIMTE toegekende benaming | string | ja | C​R​U​D |
+| aoaPostcode |  | string | nee | C​R​U​D |
+| aoaHuisnummer |  | integer | nee | C​R​U​D |
+| aoaHuisletter |  | string | nee | C​R​U​D |
+| aoaHuisnummertoevoeging |  | string | nee | C​R​U​D |
+| inpLocatiebeschrijving |  | string | nee | C​R​U​D |
 
 ## SubVerblijfBuitenland
 
