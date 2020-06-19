@@ -30,7 +30,7 @@ class KlantTests(JWTAuthMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
-        self.assertEqual(len(data), 2)
+        self.assertEqual(len(data["results"]), 2)
 
     def test_read_klant_url(self):
         klant = KlantFactory.create(
@@ -778,3 +778,27 @@ class KlantTests(JWTAuthMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Klant.objects.count(), 0)
+
+    def test_pagination_default(self):
+        KlantFactory.create_batch(2)
+        url = reverse(Klant)
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 2)
+        self.assertIsNone(response_data["previous"])
+        self.assertIsNone(response_data["next"])
+
+    def test_pagination_page_param(self):
+        KlantFactory.create_batch(2)
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"page": 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 2)
+        self.assertIsNone(response_data["previous"])
+        self.assertIsNone(response_data["next"])
