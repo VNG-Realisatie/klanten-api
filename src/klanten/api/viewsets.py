@@ -1,6 +1,7 @@
 import logging
 
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from vng_api_common.audittrails.viewsets import (
     AuditTrailViewSet,
     AuditTrailViewsetMixin,
@@ -73,6 +74,7 @@ class KlantViewSet(
     serializer_class = KlantSerializer
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
+    pagination_class = PageNumberPagination
     required_scopes = {
         "list": SCOPE_KLANTEN_ALLES_LEZEN,
         "retrieve": SCOPE_KLANTEN_ALLES_LEZEN,
