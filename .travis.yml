@@ -58,6 +58,10 @@ jobs:
     - stage: "Publication"
       name: "Docker image"
       if: fork = false
+      before_install: skip
+      install: skip
+      before_script: skip
+      after_success: echo "deploying..."
       deploy:
         - provider: script
           script: bash bin/cicd.sh latest no
