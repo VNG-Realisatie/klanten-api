@@ -72,3 +72,6 @@ jobs:
           script: bash bin/cicd.sh $TRAVIS_TAG yes
           on:
             tags: true
+            
+after_success:
+  - codecov
