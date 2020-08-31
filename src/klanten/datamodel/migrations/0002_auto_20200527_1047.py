@@ -73,7 +73,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.AddField(
             model_name="klant",
@@ -122,7 +124,8 @@ class Migration(migrations.Migration):
             preserve_default=False,
         ),
         migrations.AlterUniqueTogether(
-            name="klant", unique_together={("bronorganisatie", "klantnummer")},
+            name="klant",
+            unique_together={("bronorganisatie", "klantnummer")},
         ),
         migrations.AddField(
             model_name="klantadres",

@@ -103,7 +103,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "klant", "verbose_name_plural": "klanten",},
+            options={
+                "verbose_name": "klant",
+                "verbose_name_plural": "klanten",
+            },
             bases=(vng_api_common.models.APIMixin, models.Model),
         ),
         migrations.CreateModel(
@@ -196,7 +199,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "natuurlijk persoon",},
+            options={
+                "verbose_name": "natuurlijk persoon",
+            },
         ),
         migrations.CreateModel(
             name="NietNatuurlijkPersoon",
@@ -310,7 +315,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "niet-natuurlijk persoon",},
+            options={
+                "verbose_name": "niet-natuurlijk persoon",
+            },
         ),
         migrations.CreateModel(
             name="Vestiging",
@@ -349,7 +356,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "vestiging",},
+            options={
+                "verbose_name": "vestiging",
+            },
         ),
         migrations.CreateModel(
             name="SubVerblijfBuitenland",

@@ -8,7 +8,9 @@ from .viewsets import KlantAuditTrailViewSet, KlantViewSet
 
 router = routers.DefaultRouter()
 router.register(
-    "klanten", KlantViewSet, [routers.nested("audittrail", KlantAuditTrailViewSet)],
+    "klanten",
+    KlantViewSet,
+    [routers.nested("audittrail", KlantAuditTrailViewSet)],
 )
 
 
