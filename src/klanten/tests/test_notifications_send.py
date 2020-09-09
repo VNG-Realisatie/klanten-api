@@ -51,7 +51,9 @@ class SendNotifTestCase(JWTAuthMixin, APITestCase):
                 "resourceUrl": data["url"],
                 "actie": "create",
                 "aanmaakdatum": "2018-09-07T00:00:00Z",
-                "kenmerken": {"subjectType": "natuurlijk_persoon",},
+                "kenmerken": {
+                    "subjectType": "natuurlijk_persoon",
+                },
             },
         )
 

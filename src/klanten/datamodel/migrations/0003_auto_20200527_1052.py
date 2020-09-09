@@ -11,10 +11,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="klantadres", old_name="aoa_huisletter", new_name="huisletter",
+            model_name="klantadres",
+            old_name="aoa_huisletter",
+            new_name="huisletter",
         ),
         migrations.RenameField(
-            model_name="klantadres", old_name="aoa_huisnummer", new_name="huisnummer",
+            model_name="klantadres",
+            old_name="aoa_huisnummer",
+            new_name="huisnummer",
         ),
         migrations.RenameField(
             model_name="klantadres",
@@ -22,22 +26,35 @@ class Migration(migrations.Migration):
             new_name="huisnummertoevoeging",
         ),
         migrations.RenameField(
-            model_name="klantadres", old_name="aoa_postcode", new_name="postcode",
+            model_name="klantadres",
+            old_name="aoa_postcode",
+            new_name="postcode",
         ),
         migrations.RenameField(
             model_name="klantadres",
             old_name="wpl_woonplaats_naam",
             new_name="woonplaats_naam",
         ),
-        migrations.RemoveField(model_name="klantadres", name="aoa_identificatie",),
         migrations.RemoveField(
-            model_name="klantadres", name="gor_openbare_ruimte_naam",
+            model_name="klantadres",
+            name="aoa_identificatie",
         ),
         migrations.RemoveField(
-            model_name="klantadres", name="inp_locatiebeschrijving",
+            model_name="klantadres",
+            name="gor_openbare_ruimte_naam",
         ),
-        migrations.RemoveField(model_name="klantadres", name="natuurlijkpersoon",),
-        migrations.RemoveField(model_name="klantadres", name="vestiging",),
+        migrations.RemoveField(
+            model_name="klantadres",
+            name="inp_locatiebeschrijving",
+        ),
+        migrations.RemoveField(
+            model_name="klantadres",
+            name="natuurlijkpersoon",
+        ),
+        migrations.RemoveField(
+            model_name="klantadres",
+            name="vestiging",
+        ),
         migrations.AddField(
             model_name="klantadres",
             name="landcode",
