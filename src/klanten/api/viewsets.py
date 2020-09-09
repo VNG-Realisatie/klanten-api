@@ -12,6 +12,7 @@ from vng_api_common.permissions import AuthScopesRequired
 from klanten.datamodel.models import Klant
 
 from .audits import AUDIT_KLANTEN
+from .filters import KlantFilter
 from .kanalen import KANAAL_KLANTEN
 from .scopes import (
     SCOPE_KLANTEN_AANMAKEN,
@@ -74,6 +75,7 @@ class KlantViewSet(
     serializer_class = KlantSerializer
     lookup_field = "uuid"
     permission_classes = (AuthScopesRequired,)
+    filterset_class = KlantFilter
     pagination_class = PageNumberPagination
     required_scopes = {
         "list": SCOPE_KLANTEN_ALLES_LEZEN,
