@@ -802,3 +802,310 @@ class KlantTests(JWTAuthMixin, APITestCase):
         self.assertEqual(response_data["count"], 2)
         self.assertIsNone(response_data["previous"])
         self.assertIsNone(response_data["next"])
+
+
+class KlantFilterTests(JWTAuthMixin, APITestCase):
+    heeft_alle_autorisaties = True
+    maxDiff = None
+
+    def test_filter_bronorganisatie(self):
+        KlantFactory.create(bronorganisatie="000000000")
+        KlantFactory.create(bronorganisatie="123456782")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"bronorganisatie": "000000000"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["bronorganisatie"], "000000000")
+
+    def test_filter_klantnummer(self):
+        KlantFactory.create(klantnummer="123")
+        KlantFactory.create(klantnummer="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"klantnummer": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["klantnummer"], "321")
+
+    def test_filter_bedrijfsnaam(self):
+        KlantFactory.create(bedrijfsnaam="123")
+        KlantFactory.create(bedrijfsnaam="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"bedrijfsnaam": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["bedrijfsnaam"], "321")
+
+    def test_filter_functie(self):
+        KlantFactory.create(functie="123")
+        KlantFactory.create(functie="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"functie": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["functie"], "321")
+
+    def test_filter_achternaam(self):
+        KlantFactory.create(achternaam="123")
+        KlantFactory.create(achternaam="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"achternaam": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["achternaam"], "321")
+
+    def test_filter_telefoonnummer(self):
+        KlantFactory.create(telefoonnummer="123")
+        KlantFactory.create(telefoonnummer="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"telefoonnummer": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["telefoonnummer"], "321")
+
+    def test_filter_telefoonnummer(self):
+        KlantFactory.create(telefoonnummer="123")
+        KlantFactory.create(telefoonnummer="321")
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"telefoonnummer": "321"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["telefoonnummer"], "321")
+
+    def test_filter_adres__straatnaam(self):
+        KlantAdresFactory.create(straatnaam="naam1")
+        KlantAdresFactory.create(straatnaam="naam2")
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"adres__straatnaam": "naam2"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["adres"]["straatnaam"], "naam2")
+
+    def test_filter_adres__postcode(self):
+        KlantAdresFactory.create(postcode="1000AC")
+        KlantAdresFactory.create(postcode="1000WR")
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"adres__postcode": "1000WR"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["adres"]["postcode"], "1000WR")
+
+    def test_filter_adres__woonplaats_naam(self):
+        KlantAdresFactory.create(woonplaats_naam="haarlem")
+        KlantAdresFactory.create(woonplaats_naam="maastricht")
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"adres__woonplaats_naam": "maastricht"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["adres"]["woonplaatsnaam"], "maastricht")
+
+    def test_filter_adres__landcode(self):
+        KlantAdresFactory.create(landcode="9036")
+        KlantAdresFactory.create(landcode="7009")
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"adres__landcode": "7009"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["adres"]["landcode"], "7009")
+
+    def test_filter_subject(self):
+        KlantFactory.create(subject="https://example.com/1")
+        KlantFactory.create(subject="https://example.com/2")
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"subject": "https://example.com/2"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subject"], "https://example.com/2")
+
+    def test_filter_subject_type(self):
+        KlantFactory.create(subject_type=KlantType.natuurlijk_persoon)
+        KlantFactory.create(subject_type=KlantType.niet_natuurlijk_persoon)
+
+        url = reverse(Klant)
+
+        response = self.client.get(
+            url, {"subject_type": KlantType.niet_natuurlijk_persoon}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectType"], KlantType.niet_natuurlijk_persoon)
+
+    def test_filter_subject_natuurlijk_persoon__inp_bsn(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.natuurlijk_persoon
+        )
+        NatuurlijkPersoonFactory.create(inp_bsn="123", klant=klant1)
+        NatuurlijkPersoonFactory.create(inp_bsn="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"subject_natuurlijkPersoon__inpBsn": "123"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["inpBsn"], "123")
+
+    def test_filter_subject_natuurlijk_persoon_anp_identificatie(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.natuurlijk_persoon
+        )
+        NatuurlijkPersoonFactory.create(anp_identificatie="123", klant=klant1)
+        NatuurlijkPersoonFactory.create(anp_identificatie="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(
+            url, {"subject_natuurlijkPersoon__anpIdentificatie": "123"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["anpIdentificatie"], "123")
+
+    def test_filter_subject_natuurlijk_persoon_inp_a_nummer(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.natuurlijk_persoon
+        )
+        NatuurlijkPersoonFactory.create(inp_a_nummer="123", klant=klant1)
+        NatuurlijkPersoonFactory.create(inp_a_nummer="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(
+            url, {"subject_natuurlijkPersoon__inpANummer": "123"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["inpANummer"], "123")
+
+    def test_filter_subject_niet_natuurlijk_persoon__inn_nnp_id(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.niet_natuurlijk_persoon
+        )
+        NietNatuurlijkPersoonFactory.create(inn_nnp_id="123", klant=klant1)
+        NietNatuurlijkPersoonFactory.create(inn_nnp_id="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(
+            url, {"subject_nietNatuurlijkPersoon__innNnpId": "123"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["innNnpId"], "123")
+
+    def test_filter_subject_niet_natuurlijk_persoon_anp_identificatie(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.niet_natuurlijk_persoon
+        )
+        NietNatuurlijkPersoonFactory.create(ann_identificatie="123", klant=klant1)
+        NietNatuurlijkPersoonFactory.create(ann_identificatie="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(
+            url, {"subject_nietNatuurlijkPersoon__annIdentificatie": "123"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["annIdentificatie"], "123")
+
+    def test_filter_subject_vestiging_vestigings_nummer(self):
+        klant1, klant2 = KlantFactory.create_batch(
+            2, subject="", subject_type=KlantType.vestiging
+        )
+        VestigingFactory.create(vestigings_nummer="123", klant=klant1)
+        VestigingFactory.create(vestigings_nummer="321", klant=klant2)
+
+        url = reverse(Klant)
+
+        response = self.client.get(url, {"subject_vestiging__vestigingsNummer": "123"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(response_data["count"], 1)
+
+        result = response_data["results"][0]
+        self.assertEqual(result["subjectIdentificatie"]["vestigingsNummer"], "123")
