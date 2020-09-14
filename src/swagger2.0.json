@@ -172,7 +172,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "subjectVestigingVestigingsNummer",
+                        "name": "subjectVestiging__vestigingsNummer",
                         "in": "query",
                         "description": "Een korte unieke aanduiding van de Vestiging.",
                         "required": false,
