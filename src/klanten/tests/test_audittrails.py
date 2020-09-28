@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.audittrails.models import AuditTrail
@@ -8,7 +9,7 @@ from vng_api_common.tests import JWTAuthMixin, reverse
 from klanten.datamodel.constants import KlantType
 from klanten.datamodel.models import Klant
 
-SUBJECT = "http://example.com/subject/1"
+SUBJECT = "https://example.com/subject/1"
 
 
 class AuditTrailTests(JWTAuthMixin, APITestCase):
@@ -28,7 +29,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
             "subject": SUBJECT,
         }
 
-        response = self.client.post(list_url, data)
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(list_url, data)
 
         return response.data
 
@@ -52,7 +55,9 @@ class AuditTrailTests(JWTAuthMixin, APITestCase):
         del modified_data["subject_identificatie"]
         modified_data["emailadres"] = "new@gmail.com"
 
-        response = self.client.put(url, modified_data)
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.put(url, modified_data)
 
         klant_response = response.data
 

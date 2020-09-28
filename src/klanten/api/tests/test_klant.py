@@ -1,3 +1,4 @@
+import requests_mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import JWTAuthMixin, get_validation_errors, reverse
@@ -291,7 +292,9 @@ class KlantTests(JWTAuthMixin, APITestCase):
             "subject": SUBJECT,
         }
 
-        response = self.client.post(list_url, data)
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -624,7 +627,9 @@ class KlantTests(JWTAuthMixin, APITestCase):
         del data["subjectIdentificatie"]
         data["voornaam"] = "new name"
 
-        response = self.client.put(detail_url, data)
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.put(detail_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
