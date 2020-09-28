@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from vng_api_common.polymorphism import Discriminator, PolymorphicSerializer
 from vng_api_common.serializers import add_choice_values_help_text
-from vng_api_common.validators import IsImmutableValidator
+from vng_api_common.validators import IsImmutableValidator, URLValidator
 
 from klanten.datamodel.constants import GeslachtsAanduiding, KlantType
 from klanten.datamodel.models import (
@@ -292,7 +292,7 @@ class KlantSerializer(PolymorphicSerializer):
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
-            "subject": {"required": False},
+            "subject": {"required": False, "validators": [URLValidator()]},
             "subject_type": {"validators": [IsImmutableValidator()]},
         }
 
