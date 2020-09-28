@@ -1114,3 +1114,67 @@ class KlantFilterTests(JWTAuthMixin, APITestCase):
 
         result = response_data["results"][0]
         self.assertEqual(result["subjectIdentificatie"]["vestigingsNummer"], "123")
+
+    def test_create_klant_subject_url_invalid(self):
+        list_url = reverse(Klant)
+        data = {
+            "bronorganisatie": "950428139",
+            "klantnummer": "1111",
+            "websiteUrl": "http://some.website.com",
+            "voornaam": "Xavier",
+            "achternaam": "Jackson",
+            "emailadres": "test@gmail.com",
+            "adres": {
+                "straatnaam": "Keizersgracht",
+                "huisnummer": "117",
+                "huisletter": "A",
+                "postcode": "1015CJ",
+                "woonplaatsnaam": "test",
+                "landcode": "1234",
+            },
+            "subjectType": KlantType.natuurlijk_persoon,
+            "subject": "https://example.com/404",
+        }
+
+        with requests_mock.Mocker() as m:
+            m.get("https://example.com/404", status_code=404)
+            response = self.client.post(list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertEqual(Klant.objects.count(), 0)
+
+        error = get_validation_errors(response, "subject")
+        self.assertEqual(error["code"], "bad-url")
+
+    def test_update_klant_subject_url_invalid(self):
+        klant = KlantFactory.create(subject=SUBJECT, voornaam="old name")
+        detail_url = reverse(klant)
+        data = self.client.get(detail_url).json()
+        del data["url"]
+        del data["subjectIdentificatie"]
+        data["subject"] = "https://example.com/404"
+
+        with requests_mock.Mocker() as m:
+            m.get("https://example.com/404", status_code=404)
+            response = self.client.put(detail_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subject")
+        self.assertEqual(error["code"], "bad-url")
+
+    def test_partial_update_klant_subject_url_invalid(self):
+        klant = KlantFactory.create(subject=SUBJECT, voornaam="old name")
+        detail_url = reverse(klant)
+
+        with requests_mock.Mocker() as m:
+            m.get("https://example.com/404", status_code=404)
+            response = self.client.patch(
+                detail_url, {"subject": "https://example.com/404"}
+            )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "subject")
+        self.assertEqual(error["code"], "bad-url")
