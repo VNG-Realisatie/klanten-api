@@ -1,6 +1,6 @@
-=========
+===========
 Klanten API
-=========
+===========
 
 :Version: master
 :Source: https://github.com/VNG-Realisatie/klanten-api
@@ -18,12 +18,12 @@ API specificaties
 
 |lint-oas| |generate-sdks| |generate-postman-collection|
 
-==========  ==============  =============================
-Versie      Release datum   API specificatie
-==========  ==============  =============================
-master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/klanten-api/master/src/openapi.yaml>`_,
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+Versie      Release datum   API specificatie                                                                                                                                                                                      Autorisaties                                                                                                             Notificaties
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/klanten-api/master/src/openapi.yaml>`_,                                                                 `Scopes <https://github.com/VNG-Realisatie/klanten-api/blob/master/src/autorisaties.md>`_                                `Berichtkenmerken <https://github.com/VNG-Realisatie/klanten-api/blob/master/src/notificaties.md>`_
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/klanten-api/master/src/openapi.yaml>`_
-==========  ==============  =============================
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
 
 Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/klanten-api/blob/master/CHANGELOG.rst>`_
 
