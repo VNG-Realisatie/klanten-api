@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 from django.test import override_settings
 
+import requests_mock
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -37,7 +38,9 @@ class SendNotifTestCase(JWTAuthMixin, APITestCase):
             "subject": SUBJECT,
         }
 
-        response = self.client.post(url, data)
+        with requests_mock.Mocker() as m:
+            m.get(SUBJECT, json={})
+            response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
 
